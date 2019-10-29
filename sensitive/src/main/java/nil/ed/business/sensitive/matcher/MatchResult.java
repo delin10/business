@@ -6,12 +6,13 @@ package nil.ed.business.sensitive.matcher;
  **/
 public class MatchResult {
     /**
-     * 匹配起始位置
+     * 在原始文本的匹配起始位置
+     *
      */
     private int start;
 
     /**
-     * 匹配结束位置(exclusive)
+     * 在原始文本中的匹配结束位置(exclusive)
      */
     private int end;
 
