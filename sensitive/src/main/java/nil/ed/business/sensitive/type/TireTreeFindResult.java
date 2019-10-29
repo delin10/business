@@ -56,6 +56,10 @@ public class TireTreeFindResult {
     }
 
     public boolean hasFind(){
-        return matchTextEnd - matchTextStart > 0;
+        return matchCharCount() > 0;
+    }
+
+    public int matchCharCount(){
+        return matchTextEnd - matchTextStart;
     }
 }
