@@ -31,22 +31,6 @@ public class SegmentSensitiveFilter extends AbstractSensitiveFilter {
     protected MatchText getMatchText(String sourceText) {
         List<String> words = segmenter.seg(sourceText);
         System.out.println(words);
-        return new SegmentMatchText(words, true);
-    }
-
-    @Override
-    protected int handleMatchResult(String sourceText, MatchText text, int cursor, StringBuilder maskText, MatchResult matchResult) {
-        int end = matchResult == null ? text.count() : matchResult.getStart();
-        for (int i = cursor; i < end; ++i){
-            maskText.append(text.wordAt(i));
-        }
-
-        if (matchResult == null){
-            return 0;
-        }
-
-        String maskString = Arrayx.repeat(replaceMask, text.wordAt(matchResult.getStart()).length());
-        maskText.append(maskString);
-        return maskString.length();
+        return new SegmentMatchText(sourceText, words, true);
     }
 }

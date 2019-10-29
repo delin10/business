@@ -21,18 +21,6 @@ public class ForwardMatchSensitiveFilter extends AbstractSensitiveFilter {
     }
 
     @Override
-    protected int handleMatchResult(String sourceText, MatchText text, int cursor, StringBuilder maskText, MatchResult matchResult) {
-        if (matchResult == null){
-            maskText.append(sourceText, cursor, sourceText.length());
-            return 0;
-        }
-        String mask = Arrayx.repeat(replaceMask, matchResult.matchLength());
-        maskText.append(sourceText, cursor, matchResult.getStart());
-        maskText.append(mask);
-        return mask.length();
-    }
-
-    @Override
     protected MatchText getMatchText(String sourceText) {
         return new StringMatchText(sourceText);
     }
