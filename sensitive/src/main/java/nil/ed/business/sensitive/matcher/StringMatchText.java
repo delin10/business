@@ -5,15 +5,15 @@ package nil.ed.business.sensitive.matcher;
  * @since 2019/10/28
  **/
 public class StringMatchText implements MatchText {
+
     private String text;
+
+    private int cursor;
+
+    private int completeCharCount;
 
     public StringMatchText(String text) {
         this.text = text;
-    }
-
-    @Override
-    public CharSequence wordAt(int i) {
-        return new SubStringView(text, i, text.length());
     }
 
     @Override
@@ -22,7 +22,34 @@ public class StringMatchText implements MatchText {
     }
 
     @Override
-    public CharSequence regionWordString(int start, int end) {
-        return text.substring(start, end);
+    public CharSequence getSourceText() {
+        return text;
+    }
+
+    @Override
+    public int completeCharCount() {
+        return completeCharCount;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return cursor < count();
+    }
+
+    @Override
+    public CharSequence next() {
+        CharSequence word = new SubStringView(text, cursor++, count());
+        completeCharCount++;
+        return word;
+    }
+
+    @Override
+    public int getSourceTextCursor() {
+        return cursor;
+    }
+
+    @Override
+    public int getLastSourceTextCursor() {
+        return cursor - 1;
     }
 }
