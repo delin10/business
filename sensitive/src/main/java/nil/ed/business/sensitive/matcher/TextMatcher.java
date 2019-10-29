@@ -7,7 +7,8 @@ package nil.ed.business.sensitive.matcher;
 public interface TextMatcher {
     /**
      * 获取下一个匹配
-     * @return 下一个匹配的结果
+     *
+     * @return 下一个匹配的结果，属性意义见 {@link MatchResult}
      */
     MatchResult next();
 

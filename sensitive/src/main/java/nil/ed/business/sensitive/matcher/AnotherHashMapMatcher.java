@@ -13,7 +13,7 @@ public class AnotherHashMapMatcher extends AbstractLevelMatcher {
 
     private MatchText text;
 
-    private int cursor;
+    private String[] afterTranslate;
 
     public AnotherHashMapMatcher(MatchLevel level, List<String> words) {
         super(level);
@@ -22,35 +22,48 @@ public class AnotherHashMapMatcher extends AbstractLevelMatcher {
 
     @Override
     public MatchResult next() {
-        int i = cursor, j = 0;
-        String[] afterTranslate = translateToArray(text.wordAt(cursor));
-        ok:
-        for(; i < text.count(); ++i) {
-            StringBuilder tryForwardResult = new StringBuilder();
-            CharSequence sequence = text.wordAt(i);
-            for (j = 0; j < sequence.length(); ++j) {
-                tryForwardResult.append(afterTranslate[i + j]);
-                Boolean canEnd = stateMachine.get(tryForwardResult.toString());
-                if (canEnd == null) {
-                    break;
-                } else if (canEnd) {
-                    break ok;
-                }
+        int matchCount = 0;
+
+        while (text.hasNext()) {
+            CharSequence sequence = text.next();
+            /*
+             当前子串在原文本中的起始位置
+             */
+            int baseCharIndex = text.getLastSourceTextCursor();
+            int matchEnd = match(sequence, baseCharIndex);
+            if (matchEnd > 0){
+                matchCount = matchEnd;
+                break;
             }
         }
-        cursor = j + 1;
-        return new MatchResult(i, j + 1);
+
+        return new MatchResult(text.getLastSourceTextCursor(), text.getLastSourceTextCursor() + matchCount);
     }
 
     @Override
     public boolean continuable() {
-        return cursor < text.count();
+        return text.hasNext();
     }
 
     @Override
     public void setMatchText(MatchText text) {
         this.text = text;
-        cursor = 0;
+        afterTranslate = translateToArray(text.getSourceText());
+    }
+
+    private int match(CharSequence sequence, int baseCharIndex){
+        StringBuilder tryForwardResult = new StringBuilder();
+        for (int j = 0; j < sequence.length(); ++j) {
+            tryForwardResult.append(afterTranslate[baseCharIndex + j]);
+            Boolean canEnd = stateMachine.get(tryForwardResult.toString());
+            if (canEnd == null) {
+                break;
+            } else if (canEnd) {
+                return j + 1;
+            }
+        }
+
+        return -1;
     }
 
     /**
@@ -63,7 +76,7 @@ public class AnotherHashMapMatcher extends AbstractLevelMatcher {
             StringBuilder builder = new StringBuilder(word.length());
             for (int i = 0; i < word.length(); ++i){
                 builder.append(word.charAt(i));
-                stateMachine.putIfAbsent(translate(builder.toString()), false);;
+                stateMachine.putIfAbsent(translate(builder.toString()), false);
             }
             stateMachine.put(translate(word), true);
         }
