@@ -2,6 +2,7 @@ package nil.ed.business.sensitive;
 
 import nil.ed.business.sensitive.matcher.AbstractLevelMatcher;
 import nil.ed.business.sensitive.matcher.AnotherHashMapMatcher;
+import nil.ed.business.sensitive.matcher.TierTreeMatcher;
 import nil.ed.business.sensitive.util.Arrayx;
 import org.junit.Test;
 
@@ -14,7 +15,7 @@ public class ForwardMatchSensitiveFilterTest {
     @Test
     public void filter() {
         Function<List<String>, SensitiveFilter> constructor = lib ->
-            new ForwardMatchSensitiveFilter(new AnotherHashMapMatcher(AbstractLevelMatcher.MatchLevel.NORMAL, lib));
+            new ForwardMatchSensitiveFilter(new TierTreeMatcher(AbstractLevelMatcher.MatchLevel.NORMAL, lib));
         testFramework(constructor);
     }
 

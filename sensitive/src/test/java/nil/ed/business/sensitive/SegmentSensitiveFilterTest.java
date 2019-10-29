@@ -1,6 +1,7 @@
 package nil.ed.business.sensitive;
 
 import nil.ed.business.sensitive.matcher.AbstractLevelMatcher;
+import nil.ed.business.sensitive.matcher.AnotherHashMapMatcher;
 import nil.ed.business.sensitive.matcher.TierTreeMatcher;
 import nil.ed.business.sensitive.seg.impl.WordSegmenterImpl;
 import nil.ed.business.sensitive.util.Arrayx;
@@ -15,7 +16,7 @@ public class SegmentSensitiveFilterTest {
     @Test
     public void test()  {
         Function<List<String>, SensitiveFilter> constructor = lib ->
-                new SegmentSensitiveFilter(new TierTreeMatcher(AbstractLevelMatcher.MatchLevel.NORMAL, lib), new WordSegmenterImpl());
+                new SegmentSensitiveFilter(new AnotherHashMapMatcher(AbstractLevelMatcher.MatchLevel.NORMAL, lib), new WordSegmenterImpl());
         testFramework(constructor);
     }
 
