@@ -67,4 +67,8 @@ public class SegmentMatchText implements MatchText {
 
         return charCount - words.get(cursor - 1).length();
     }
+
+    @Override
+    public void consume(int consumedCharCount) {
+    }
 }

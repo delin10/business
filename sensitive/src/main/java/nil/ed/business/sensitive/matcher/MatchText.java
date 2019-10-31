@@ -41,4 +41,11 @@ public interface MatchText extends Iterator<CharSequence> {
      * @return 上一次调用next时在原文本的下标
      */
     int getLastSourceTextCursor();
+
+    /**
+     * 消耗的字符数量
+     *
+     * @param consumedCharCount 消耗的字符数量
+     */
+    void consume(int consumedCharCount);
 }

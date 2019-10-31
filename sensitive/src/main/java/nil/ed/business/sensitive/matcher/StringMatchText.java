@@ -38,8 +38,7 @@ public class StringMatchText implements MatchText {
 
     @Override
     public CharSequence next() {
-        CharSequence word = new SubStringView(text, cursor++, count());
-        completeCharCount++;
+        CharSequence word = new SubStringView(text, cursor, count());
         return word;
     }
 
@@ -50,6 +49,12 @@ public class StringMatchText implements MatchText {
 
     @Override
     public int getLastSourceTextCursor() {
-        return cursor - 1;
+        return cursor;
+    }
+
+    @Override
+    public void consume(int consumedCharCount) {
+        completeCharCount += consumedCharCount;
+        cursor += consumedCharCount;
     }
 }

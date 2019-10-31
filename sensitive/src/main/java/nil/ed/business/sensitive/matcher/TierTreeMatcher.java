@@ -33,11 +33,15 @@ public class TierTreeMatcher extends AbstractLevelMatcher {
             /*
             todo 需要优化，太多次拼音转换
              */
-            String translateStr = translate(text.next());
+            CharSequence next = text.next();
+            String translateStr = translate(next);
             result = tireTree.find(translateStr, 0, translateStr.length());
             if (result.hasFind()) {
+                text.consume(result.matchCharCount());
                 break;
             }
+
+            text.consume(1);
         }
 
         int matchCount = Optional.ofNullable(result).map(TireTreeFindResult::matchCharCount).orElse(0);
