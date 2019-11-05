@@ -1,5 +1,8 @@
 package nil.ed.business.sensitive;
 
+import nil.ed.business.sensitive.hash.IBloomFilter;
+import nil.ed.business.sensitive.hash.impl.RedisBloomFilter;
+import nil.ed.business.sensitive.hash.impl.RedisBloomFilterBuilder;
 import nil.ed.business.sensitive.matcher.AbstractLevelMatcher;
 import nil.ed.business.sensitive.matcher.AnotherHashMapMatcher;
 import nil.ed.business.sensitive.matcher.BloomFilterMatcher;
@@ -21,8 +24,14 @@ public class ForwardMatchSensitiveFilterTest {
 
     @Test
     public void filterWithBloom() {
+        IBloomFilter<String> bloomFilter = new RedisBloomFilterBuilder().setBloomKey("testKey2")
+                .setHost("127.0.0.1")
+                .setPort(6379)
+                .setErrorRate(0.001)
+                .setInitialCapacity(10000)
+                .build();
         Function<List<String>, SensitiveFilter> constructor = lib ->
-            new ForwardMatchSensitiveFilter(new BloomFilterMatcher(AbstractLevelMatcher.MatchLevel.NORMAL, lib));
+            new ForwardMatchSensitiveFilter(new BloomFilterMatcher(AbstractLevelMatcher.MatchLevel.NORMAL, lib, bloomFilter));
         testFramework(constructor);
     }
 
