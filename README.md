@@ -6,7 +6,7 @@
 ### 二、三种常用的匹配算法
 1、HashMap暴力匹配：AnotherHashMapMatcher  
 2、TierTree前缀树匹配：TierTreeMatcher  
-3、BloomFilter：BloomFilterMatcher  
+3、BloomFilter：BloomFilterMatcher | Redis Bloom Filter
 
 ### 三、推荐组合
 
